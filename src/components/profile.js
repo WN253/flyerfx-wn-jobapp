@@ -1,17 +1,12 @@
 import React, { useState } from 'react';
-import { TextField, Button, FormControl, InputLabel, Select, MenuItem, Container, Typography, Checkbox, FormControlLabel, Box } from '@mui/material';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import Input from '@mui/material/Input';
-import InputAdornment from '@mui/material/InputAdornment';
-import BadgeIcon from '@mui/icons-material/Badge';
-
+import { TextField, Button, FormControl,InputLabel,Select, FormLabel, RadioGroup, FormControlLabel, Radio, MenuItem, Container, Typography, Checkbox, Box, Backdrop, CircularProgress } from '@mui/material';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import PhoneIcon from '@mui/icons-material/Phone';
 import NumbersIcon from '@mui/icons-material/Numbers';
 import WcOutlinedIcon from '@mui/icons-material/WcOutlined';
 import WorkIcon from '@mui/icons-material/Work';
 import HomeIcon from '@mui/icons-material/Home';
-
+import BadgeIcon from '@mui/icons-material/Badge';
 
 const ProfileForm = () => {
     const [formValues, setFormValues] = useState({
@@ -25,6 +20,7 @@ const ProfileForm = () => {
     });
 
     const [sameAddress, setSameAddress] = useState(false);
+    const [open, setOpen] = useState(false);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -46,18 +42,27 @@ const ProfileForm = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        setOpen(true);
         console.log(formValues);
+        setTimeout(() => {
+            setOpen(false);
+            alert('Form submitted successfully!');
+        }, 2000);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
     };
 
     return (
         <Container maxWidth="sm">
-                <Typography variant="h6" align="center" gutterBottom>
+            <Typography variant="h6" align="center" gutterBottom>
                 <BadgeIcon sx={{ fontSize: 60, verticalAlign: 'middle', mr: 1 }} />
                 Job Application
-                </Typography>
-                <form onSubmit={handleSubmit}>
+            </Typography>
+            <form onSubmit={handleSubmit}>
                 <Box display="flex" alignItems="center">
-                <AccountBoxIcon sx={{ fontSize: 35, marginRight: 1 }} />
+                    <AccountBoxIcon sx={{ fontSize: 35, marginRight: 1 }} />
                     <TextField
                         label="Name"
                         name="name"
@@ -79,13 +84,11 @@ const ProfileForm = () => {
                         fullWidth
                         margin="normal"
                         variant="outlined"
-                        inputProps={{ min: 20, max: 50 }}
-                    /></Box>
-                    
-                    <Box display="flex" alignItems="center">
+                    />
+                </Box>
+                <Box display="flex" alignItems="center">
                     <PhoneIcon sx={{ fontSize: 35, marginRight: 1 }} />
                     <TextField
-                    
                         label="Phone Number"
                         name="phoneNumber"
                         value={formValues.phoneNumber}
@@ -94,25 +97,24 @@ const ProfileForm = () => {
                         margin="normal"
                         variant="outlined"
                     />
-                    </Box>
-                    <Box display="flex" alignItems="center">
+                </Box>
+                <Box display="flex" alignItems="center">
                     <WcOutlinedIcon sx={{ fontSize: 35, marginRight: 1 }} />
-                    <FormControl fullWidth margin="normal" variant="outlined">
-                    
-                        <InputLabel>Gender</InputLabel>
-                        <Select
+                    <FormControl component="fieldset" fullWidth margin="normal">
+                        <FormLabel component="legend" sx={{ ml: 1 }}>Gender</FormLabel>
+                        <RadioGroup sx={{ ml: 1 }}
                             name="gender"
                             value={formValues.gender}
                             onChange={handleChange}
-                            label="Gender"
+                            row
                         >
-                            <MenuItem value="male">Male</MenuItem>
-                            <MenuItem value="female">Female</MenuItem>
-                            <MenuItem value="other">Other</MenuItem>
-                        </Select>
+                            <FormControlLabel value="male" control={<Radio />} label="Male" />
+                            <FormControlLabel value="female" control={<Radio />} label="Female" />
+                            <FormControlLabel value="other" control={<Radio />} label="Other" />
+                        </RadioGroup>
                     </FormControl>
-                    </Box>
-                    <Box display="flex" alignItems="center">
+                </Box>
+                <Box display="flex" alignItems="center">
                     <WorkIcon sx={{ fontSize: 35, marginRight: 1 }} />
                     <FormControl fullWidth margin="normal" variant="outlined">
                         <InputLabel>Job Position</InputLabel>
@@ -120,7 +122,7 @@ const ProfileForm = () => {
                             name="jobPosition"
                             value={formValues.jobPosition}
                             onChange={handleChange}
-                            label="jobPosition"
+                            label="Job Position"
                         >
                             <MenuItem value="Java Developer">Java Developer</MenuItem>
                             <MenuItem value="Python Developer">Frontend Developer</MenuItem>
@@ -128,8 +130,8 @@ const ProfileForm = () => {
                             <MenuItem value="Full Stack Developer">Full Stack Developer</MenuItem>
                         </Select>
                     </FormControl>
-                    </Box>
-                    <Box display="flex" alignItems="center">
+                </Box>
+                <Box display="flex" alignItems="center">
                     <HomeIcon sx={{ fontSize: 35, marginRight: 1 }} />
                     <TextField
                         label="Current Address"
@@ -142,20 +144,19 @@ const ProfileForm = () => {
                         multiline
                         rows={4}
                     />
-                    </Box>
-                    
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={sameAddress}
-                                onChange={handleCheckboxChange}
-                                name="sameAddress"
-                                color="primary"
-                            />
-                        }
-                        label="Same as Current Address"
-                    />
-                    <Box display="flex" alignItems="center">
+                </Box>
+                <FormControlLabel sx={{ ml: 4 }}
+                    control={
+                        <Checkbox
+                            checked={sameAddress}
+                            onChange={handleCheckboxChange}
+                            name="sameAddress"
+                            color="primary"
+                        />
+                    }
+                    label="Same as Current Address"
+                />
+                <Box display="flex" alignItems="center">
                     <HomeIcon sx={{ fontSize: 35, marginRight: 1 }} />
                     <TextField
                         label="Permanent Address"
@@ -169,12 +170,18 @@ const ProfileForm = () => {
                         rows={4}
                         disabled={sameAddress}
                     />
-                    </Box>
-                    <Button type="submit" variant="contained" color="primary" fullWidth>
-                        Submit
-                    </Button>
-                </form>
-            
+                </Box>
+                <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 3 }}>
+                    Submit
+                </Button>
+            </form>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={open}
+                onClick={handleClose}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </Container>
     );
 };

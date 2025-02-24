@@ -15,16 +15,18 @@ const Education = () => {
         setEducationList(updatedEducationList);
     };
 
-
     const handleAddEducation = () => {
-        setEducationList([...educationList, { degree: '', institution: '', year: '', percentage: '' }]);
+        if (educationList.length < 3) {
+            setEducationList([...educationList, { degree: '', institution: '', year: '', percentage: '' }]);
+        } else {
+            alert('Maximum 3 Education Details Allowed!!!');
+        }
     };
 
     const handleRemoveEducation = (index) => {
         const updatedEducationList = educationList.filter((_, i) => i !== index);
         setEducationList(updatedEducationList);
     };
-
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -36,10 +38,10 @@ const Education = () => {
             <form onSubmit={handleSubmit}>
                 <Typography variant="h6" align="center" gutterBottom>
                     <SchoolIcon sx={{ fontSize: 60, verticalAlign: 'middle', mr: 1 }} />
-                            Education Details
-                    </Typography>
+                    Education Details
+                </Typography>
                 {educationList.map((education, index) => (
-                    <Box>
+                    <Box key={index} mb={2}>
                         <TextField
                             label="Degree Name"
                             name="degree"
@@ -83,15 +85,14 @@ const Education = () => {
                                 <Delete />
                             </IconButton>
                         )}
-                        <Button onClick={handleAddEducation} variant="outlined" color="primary" startIcon={<Add />} fullWidth>
-                        Add More Education
-                        </Button>
-                        <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
-                            Submit
-                        </Button>
                     </Box>
                 ))}
-                
+                <Button onClick={handleAddEducation} variant="outlined" color="primary" startIcon={<Add />} fullWidth>
+                    Add More Education
+                </Button>
+                <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+                    Submit
+                </Button>
             </form>
         </Container>
     );

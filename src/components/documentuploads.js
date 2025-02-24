@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Box, Typography, Button, Input } from '@mui/material';
+import { Container, Typography, Button, Input } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 const DocumentUploads = () => {
