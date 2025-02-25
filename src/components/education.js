@@ -3,7 +3,7 @@ import { Box, TextField, Button, Container, Typography, IconButton } from '@mui/
 import { Add, Delete } from '@mui/icons-material';
 import SchoolIcon from '@mui/icons-material/School';
 
-const Education = () => {
+const Education = ({ handleNext }) => {
     const [educationList, setEducationList] = useState([
         { degree: '', institution: '', year: '', percentage: '' }
     ]);
@@ -16,10 +16,10 @@ const Education = () => {
     };
 
     const handleAddEducation = () => {
-        if (educationList.length < 3) {
+        if (educationList.length < 4) {
             setEducationList([...educationList, { degree: '', institution: '', year: '', percentage: '' }]);
         } else {
-            alert('Maximum 3 Education Details Allowed!!!');
+            alert('You can add a maximum of 4 education entries.');
         }
     };
 
@@ -30,7 +30,7 @@ const Education = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log("Education Details:", educationList);
+        handleNext();
     };
 
     return (
@@ -91,7 +91,7 @@ const Education = () => {
                     Add More Education
                 </Button>
                 <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
-                    Submit
+                    Next
                 </Button>
             </form>
         </Container>
