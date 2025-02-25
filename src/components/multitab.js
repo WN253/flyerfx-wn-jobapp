@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tabs, Tab, Box, Container, Fade } from '@mui/material';
+import { Tabs, Tab, Box, Container, Fade, Backdrop, CircularProgress } from '@mui/material';
 import ProfileForm from './profile';
 import Education from './education';
 import DocumentUploads from './documentuploads';
@@ -10,6 +10,7 @@ import Looks3Icon from '@mui/icons-material/Looks3';
 const MultiTab = () => {
     const [activeTab, setActiveTab] = useState('profile');
     const [checked, setChecked] = useState(true);
+    const [open, setOpen] = useState(false);
 
     const handleTabChange = (event, newValue) => {
         setChecked(false);
@@ -19,14 +20,34 @@ const MultiTab = () => {
         }, 300);
     };
 
+    const handleNext = () => {
+        setChecked(false);
+        setTimeout(() => {
+            if (activeTab === 'profile') {
+                setActiveTab('education');
+            } else if (activeTab === 'education') {
+                setActiveTab('documentsupdates');
+            }
+            setChecked(true);
+        }, 300);
+    };
+
+    const handleSubmit = () => {
+        setOpen(true);
+        setTimeout(() => {
+            setOpen(false);
+            alert('Form submitted successfully!');
+        }, 2000); 
+    };
+
     const renderTabContent = () => {
         switch (activeTab) {
             case 'profile':
-                return <ProfileForm />;
+                return <ProfileForm handleNext={handleNext} />;
             case 'education':
-                return <Education />;
+                return <Education handleNext={handleNext} />;
             case 'documentsupdates':
-                return <DocumentUploads />;
+                return <DocumentUploads handleSubmit={handleSubmit} />;
             default:
                 return null;
         }
@@ -34,14 +55,14 @@ const MultiTab = () => {
 
     return (
         <Container maxWidth="md">
-            <Box 
-                display="flex" 
-                flexDirection="column" 
-                alignItems="center" 
-                justifyContent="center" 
-                border={0} 
-                borderRadius={5} 
-                p={6} 
+            <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                border={0}
+                borderRadius={5}
+                p={6}
                 mt={3}
                 boxShadow={5}
                 bgcolor="background.paper"
@@ -59,6 +80,9 @@ const MultiTab = () => {
                     </Fade>
                 </Box>
             </Box>
+            <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={open}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </Container>
     );
 };

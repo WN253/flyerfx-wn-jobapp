@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, FormControl,InputLabel,Select, FormLabel, RadioGroup, FormControlLabel, Radio, MenuItem, Container, Typography, Checkbox, Box, Backdrop, CircularProgress } from '@mui/material';
+import { TextField, Button, FormControl, InputLabel, Select, FormLabel, RadioGroup, FormControlLabel, Radio, MenuItem, Container, Typography, Checkbox, Box } from '@mui/material';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import PhoneIcon from '@mui/icons-material/Phone';
 import NumbersIcon from '@mui/icons-material/Numbers';
@@ -8,7 +8,7 @@ import WorkIcon from '@mui/icons-material/Work';
 import HomeIcon from '@mui/icons-material/Home';
 import BadgeIcon from '@mui/icons-material/Badge';
 
-const ProfileForm = () => {
+const ProfileForm = ({ handleNext }) => {
     const [formValues, setFormValues] = useState({
         name: '',
         age: '',
@@ -20,7 +20,6 @@ const ProfileForm = () => {
     });
 
     const [sameAddress, setSameAddress] = useState(false);
-    const [open, setOpen] = useState(false);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -42,23 +41,14 @@ const ProfileForm = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        setOpen(true);
-        console.log(formValues);
-        setTimeout(() => {
-            setOpen(false);
-            alert('Form submitted successfully!');
-        }, 2000);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
+        handleNext();
     };
 
     return (
         <Container maxWidth="sm">
             <Typography variant="h6" align="center" gutterBottom>
                 <BadgeIcon sx={{ fontSize: 60, verticalAlign: 'middle', mr: 1 }} />
-                Job Application
+                Profile Details
             </Typography>
             <form onSubmit={handleSubmit}>
                 <Box display="flex" alignItems="center">
@@ -172,16 +162,9 @@ const ProfileForm = () => {
                     />
                 </Box>
                 <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 3 }}>
-                    Submit
+                    Next
                 </Button>
             </form>
-            <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={open}
-                onClick={handleClose}
-            >
-                <CircularProgress color="inherit" />
-            </Backdrop>
         </Container>
     );
 };
